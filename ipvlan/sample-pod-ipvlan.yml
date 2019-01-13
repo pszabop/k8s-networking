@@ -4,7 +4,7 @@ kind: Pod
 metadata:
   name: samplepod
   annotations:
-    k8s.v1.cni.cncf.io/networks: ipvlan-conf, ptp-conf
+    k8s.v1.cni.cncf.io/networks: ipvlan-conf
 spec:
   containers:
   - name: samplepod
@@ -14,3 +14,4 @@ spec:
     image: dougbtv/centos-network
     ports:
     - containerPort: 80
+  terminationGracePeriodSeconds: 1

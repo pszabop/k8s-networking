@@ -23,7 +23,7 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: ipvlan-conf, ptp-conf
+        k8s.v1.cni.cncf.io/networks: ipvlan-conf
       labels:
         app: echoheaders
     spec:
