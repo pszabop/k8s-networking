@@ -101,5 +101,26 @@ The Lyft implementation includes giving all routes that the host is aware of to 
 network (but on the host side),, which may be required by AWS's VPC subnet architecture.  
 However, they do NOT take care of any updates that routing, it only happens at pod creation 
 time.   However I will study this issue.  The solution for this setup would be to have a 
-host-side agent that updates all pods that us IPVlan network, just like AWS already provides 
-an agent that updates the host side network.
+host-side agent or a pod sidecard that updates all pods that us IPVlan network, just like 
+AWS already provides an agent that updates the host side network.
+
+### Interactions with other kube networking components
+#### Kube-Proxy
+Kube Proxy is already stateful and low performance, and will continue to work with the 
+Flannel network.
+
+If you need high performance proxy (e.g. load balancing) services you want something
+that is also on the cloud-native-address network.  The cloud provider's load
+balancer would the appropriate solution in that case.
+
+I note that one of the use cases for a high performance k8s network is when
+your clients already know how to do their own load balancing (e.g. Redis with
+ioredis).  So kube-proxy would not be used in that case anyways.
+
+### NodePorts
+One of the reasons one has to use NodePorts in k8s is because you can't address
+pods directly from external clients.   Using cloud-provid-native IP addresses
+solves this problem so there's no need to use NodePort for that use case.
+
+That being said, if you use NodePorts they will continue to work with the Flannel
+Network.  They just won't be as high performance.  THey never were anyways.
